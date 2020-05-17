@@ -1,0 +1,53 @@
+{
+    "packages": [
+        {
+            "blank-o-matic_FR": [],
+            "blank-o-matic": [
+                {
+                    "id": 1002,
+                    "prompt": "You can now add your own content to \"Use your Words\" ! What if i added %answer% to the game ?",
+                    "houseAnswers": [
+                        "No House Answer available."
+                    ],
+                    "familyMode": "true"
+                }
+            ],
+            "bookIt": [],
+            "extraExtra": [
+                {
+                    "asset": 1001,
+                    "id": 1001,
+                    "houseAnswers": [
+                        "No House Answer available."
+                    ],
+                    "orientation": "landscape",
+                    "familyMode": "true"
+                }
+            ],
+            "extraExtra_FR": [],
+            "subTheTitle": [
+                {
+                    "familyMode": "true",
+                    "asset": 1000,
+                    "id": 1000,
+                    "houseAnswers": [
+                        "No House Answer available."
+                    ],
+                    "position": "0,-192.0,837,129",
+                    "start": 4,
+                    "end": 7.95
+                }
+            ],
+            "subTheTitle_FR": [],
+            "surveySays": [],
+            "surveySays_FR": [],
+            "id": "addon"
+        }
+    ],
+    "remove": [
+        "subTheTitle",
+        "extraExtra",
+        "blank-o-matic"
+    ],
+    "idmax": 1002
+}

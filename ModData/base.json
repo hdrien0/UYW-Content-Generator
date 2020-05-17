@@ -1,0 +1,18 @@
+{
+    "packages": [
+        {
+            "blank-o-matic_FR": [],
+            "blank-o-matic":[],
+            "bookIt": [],
+            "extraExtra": [],
+            "extraExtra_FR": [],
+            "subTheTitle": [],
+            "subTheTitle_FR": [],
+            "surveySays": [],
+            "surveySays_FR": [],
+            "id":"addon"
+        }
+    ],
+    "remove": [],
+    "idmax" : "999"
+}

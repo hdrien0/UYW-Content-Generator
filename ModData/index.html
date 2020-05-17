@@ -1,0 +1,88 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>UYW content generator</title>
+  <meta name="description" content="UYW content generator">
+  <meta name="author" content="Izipak/HeavN">
+
+  <link rel="stylesheet" href="style.css?v=1.0">
+
+</head>
+
+<body>
+  <script src="script.js"></script>
+  <h1>Use your words content generator</h1>
+  <h3>Made by Izipak/HeavN</h3>
+  <div class="typeSelectors">
+    <button onclick="ChangeController('SubTheTitle')">Sub the Title</button>
+    <button onclick="ChangeController('ExtraExtra')">Extra ! Extra !</button>
+    <button onclick="ChangeController('BlankoMatic')">Blank-o-Matic</button>
+    <button onclick="ChangeController('SurveySays')">Survey says</button>
+  </div>
+  <form class="STTController" method="POST" enctype="multipart/form-data">
+    <h4>Upload a video, or or a GIF</h4>
+    <input type="hidden" name="type" value="SubTheTitle">
+    <input type="file" accept="video/*,.gif" name="STTVideo">
+      <div class="videoDetails">
+        <p>Specify the time frame of the part to subtitle (optional)</p>
+        <input type="time" name='startTime'> Start time :
+        <br>
+        <input type="time" name='endTime'> End time :
+      </div>
+    <div class=houseAnswersBox>
+      <p> Add a House Answer (optional)</p>
+      <div class="inputHouseAnswers">
+        <input type="text" class="textInputHouseAnswers" placeholder="A house answer..." name="houseAnswer">
+      </div>
+    </div>
+    <button type="submit" class="submitButton">Submit !</button>  
+  </form>
+  <form class="EEController" method="POST" enctype="multipart/form-data">
+      <input type="hidden" name="type" value="ExtraExtra">
+      <h4>Upload an image (JPG or PNG)</h4>
+      <input type="file" accept=".jpg,.jpeg,.png" name="EEImg">
+      <div class=houseAnswersBox>
+        <p> Add a House Answer (optional)</p>
+        <div class="inputHouseAnswers">
+          <input type="text" class="textInputHouseAnswers" placeholder="A house answer..." name="houseAnswer">
+        </div>
+      </div>
+      <button type="submit" class="submitButton">Submit !</button>  
+  </form>
+  <form class="BoMController" method="POST">
+    <h4>Write a prompt ! Write %answer% where the blank will be.</h4>
+    <input type="text" class="textInputBoM" placeholder="Your prompt.." name="BoMPrompt">
+    <div class=houseAnswersBox>
+        <p> Add a House Answer (optional)</p>
+      <div class="inputHouseAnswers">
+        <input type="text" class="textInputHouseAnswers" placeholder="A house answer..." name="houseAnswer">
+      </div>
+    </div>
+    <button type="submit" class="submitButton">Submit !</button>
+    </button>
+  </form>     
+  <form class="SSController" method="POST">
+    <h4>Write the three questions of Survey Says !</h4>
+    <input type="text" class="textInputSS" placeholder="First question..." name=SSQuestions>
+    <br>
+    <input type="text" class="textInputSS" placeholder="Second question..." name=SSQuestions>
+    <br>
+    <input type="text" class="textInputSS" placeholder="Third question..." name=SSQuestions>
+    <br>
+    <div class=houseAnswersBox>
+        <p> Add House Answers (optional)</p>
+      <div class="inputHouseAnswers">
+        <input type="text" class="textInputHouseAnswers" placeholder="First house answer..." name=SSHouseAnswer1>
+        <br>
+        <input type="text" class="textInputHouseAnswers" placeholder="Second house answer..." name=SSHouseAnswer2>
+        <br>
+        <input type="text" class="textInputHouseAnswers" placeholder="Third house answer..."name=SSHouseAnswer3>
+        <br>
+      </div>
+    </div>
+    <button type="submit" class="submitButton">Submit !</button>
+  </form> 
+</html>

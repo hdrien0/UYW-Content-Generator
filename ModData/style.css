@@ -1,0 +1,49 @@
+body{
+    text-align: center;
+}
+
+h1{
+    margin-bottom: 0;
+}
+h3{
+    margin-top: 2px;
+}
+
+input[type=time]{
+    margin:5px;
+}
+
+.houseAnswersBox, .videoDetails {
+    margin:25px;
+    display: block;
+}
+
+.EEController, .BoMController, .SSController, .STTController{
+    display: none;
+}
+
+
+.inputHouseAnswers{
+    margin: 25px;
+    display: block;
+}
+
+.textInputHouseAnswers, .textInputBoM, .textInputSS{
+    width: 300px;
+    margin: 10px;
+}
+
+.submitButton{
+    width: 125px;
+    height: 40px;
+}
+
+.typeSelectors {
+    display: flex;
+    flex-direction: row;
+    width: 30%;
+    margin: 0 auto;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    justify-content: space-evenly;
+}
