@@ -46,7 +46,9 @@ There is no installer yet : you have to do the installation manually.
 
 You need to copy the files needed by the mod to the right location on your computer.
 
-* First, you'll need to grab the latest release by going to the "Release" tab. 
+* First, you'll need to grab the latest release by going to the "Release" tab.
+
+* Download the release zip file (not the source code).
 
 * Decompress the zip file
 
@@ -92,7 +94,9 @@ You have two methods to configure `UYWGenerator.exe` :
 
 #### Manual mode (the easiest one)
 
-Just start `UYWGenerator.exe` or its shortcut, and you'll be prompted to configure it manually.
+Just start `UYWGenerator.exe` or its shortcut, and you'll be prompted to configure it manually. 
+
+**IMPORTANT** : The executable may be flagged as a virus by your antivirus, due to the fact that it's a compiled python script. I'm currently looking for a solution, but for now if it happens disable your antivirus or add an exception (the application is completely safe).
 
 #### Arguments (the fastest one)
 
