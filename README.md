@@ -12,12 +12,8 @@ Also, I'm French so there will surely be tons of mistakes in this README and in 
 ![SC1](https://imgur.com/YSLoAS7.png)
 ![SC2](https://imgur.com/yzCwwxC.png)
 ![SC3](https://imgur.com/MH5MzqX.png)
-
-
 ![SCG1](https://imgur.com/AFqwfaP.png)
-![SCG2](https://imgur.com/dNCtcIf.png)
-![SCG3](https://imgur.com/GvPKnwF.png)
-![SCG4](https://imgur.com/Vc2x66l.png)
+
 
 ## Features
 
