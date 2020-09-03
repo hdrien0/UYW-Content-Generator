@@ -1,18 +1,15 @@
 using System;
+using System.IO; //ADDED
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using DG.Tweening;
 using Rewired;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-// Token: 0x0200078F RID: 1935
 public class SubTheTitleController : BasicGameController
 {
-	// Token: 0x17000B18 RID: 2840
-	// (get) Token: 0x0600391F RID: 14623 RVA: 0x000346F1 File Offset: 0x000328F1
 	protected override string TaskDescriptionText
 	{
 		get
@@ -21,8 +18,6 @@ public class SubTheTitleController : BasicGameController
 		}
 	}
 
-	// Token: 0x17000B19 RID: 2841
-	// (get) Token: 0x06003920 RID: 14624 RVA: 0x000346F8 File Offset: 0x000328F8
 	protected override string WaitingMessage
 	{
 		get
@@ -31,7 +26,6 @@ public class SubTheTitleController : BasicGameController
 		}
 	}
 
-	// Token: 0x06003921 RID: 14625 RVA: 0x000346FF File Offset: 0x000328FF
 	protected override IEnumerator StartState(GameController.State state)
 	{
 		yield return base.StartState(state);
@@ -42,18 +36,18 @@ public class SubTheTitleController : BasicGameController
 			this.InputText.gameObject.SetActive(false);
 			this.MovieImage.enabled = false;
 			this._ActiveContent = (Singleton<ContentManager>.Instance.FindRandomContent(ContentManager.GameType.SubTheTitle) as ContentManager.SubTheTitleContent);
-
-			if (this._ActiveContent.ID > 999) {
-				moviePath = Application.persistentDataPath + "/NewContent/stt" + this._ActiveContent.ID.ToString() +".mp4";
-			} else {
-				moviePath =  string.Concat(new object[] {
-				"Content/SubTheTitle/",
-				this._ActiveContent.ID,
-				"/clip",
-				(Singleton<GameManager>.Instance.CurrentLanguage != GameManager.LanguageSettings.French) ? string.Empty : "_FR"
-			});
+			//BEGIN MODIFICATION
+			if (this._ActiveContent.ID > 999) {	
+				moviePath = Application.persistentDataPath + "/NewContent/stt" + this._ActiveContent.ID.ToString() +".mp4";	
+			} else {	
+				moviePath =  string.Concat(new object[] {	
+				"Content/SubTheTitle/",	
+				this._ActiveContent.ID,	
+				"/clip",	
+				(Singleton<GameManager>.Instance.CurrentLanguage != GameManager.LanguageSettings.French) ? string.Empty : "_FR"	
+			});	
 			}
-
+			//END MODIFICATION
 			if (this._ActiveContent.Dimensions != Vector2.zero)
 			{
 				this.InputText.rectTransform.sizeDelta = this._ActiveContent.Dimensions;
@@ -68,12 +62,8 @@ public class SubTheTitleController : BasicGameController
 				if (Singleton<GameManager>.Instance.IsFirstSubTheTitle)
 				{
 					Singleton<AudioManager>.Instance.SetMusicVolume(0f);
-					yield return this.PlayTutorialVideo(GameController.State.Introduction, "STT_Tut1" + ((Singleton<GameManager>.Instance.CurrentLanguage != GameManager.LanguageSettings.French) ? string.Empty : "_FR"), false);
+					yield return this.PlayTutorialVideo(GameController.State.Introduction, "STT_Tut1" + ((Singleton<GameManager>.Instance.CurrentLanguage == GameManager.LanguageSettings.French) ? "_FR" : ""), false);
 					Singleton<AudioManager>.Instance.SetMusicVolume(1f);
-				}
-				else
-				{
-					yield return this._MoviePlayer.Play(SubTheTitleController.CountdownMoviePath, false, false);
 				}
 				this._MoviePlayer.Target = this.MovieImage;
 				yield return this._MoviePlayer.Play(SubTheTitleController.CountdownMoviePath, false, false);
@@ -99,26 +89,26 @@ public class SubTheTitleController : BasicGameController
 			UnityEngine.Debug.Log("Loading Prompt");
 			UnityEngine.Debug.Log(this._ActiveContent.ID);
 			this.ShadowBackdrop.DOFade(0.58f, 0.5f);
-			string insertSubtitle = "[Insert subtitle here.]";
+			string promptText = "[Insert subtitle here.]";
 			if (Singleton<GameManager>.Instance.CurrentLanguage == GameManager.LanguageSettings.French)
 			{
-				insertSubtitle = "[Insérer un sous-titre ici.]";
+				promptText = "[Insérer un sous-titre ici.]";
 			}
-			yield return this.PlayMovie(GameController.State.RevealPrompt, this._ActiveContent, moviePath, insertSubtitle, false, true);
+			yield return this.PlayMovie(GameController.State.RevealPrompt, this._ActiveContent, moviePath, promptText, false, true); //MODIFIED
 			base.ChangeState(GameController.State.InputCheck);
 			break;
 		}
 		case GameController.State.WaitForInput:
 		{
-			string insertSubtitle2 = "[Insert subtitle here.]";
+			string promptText2 = "[Insert subtitle here.]";
 			if (Singleton<GameManager>.Instance.CurrentLanguage == GameManager.LanguageSettings.French)
 			{
-				insertSubtitle2 = "[Insérer un sous-titre ici.]";
+				promptText2 = "[Insérer un sous-titre ici.]";
 			}
-			yield return this.PlayMovie(GameController.State.WaitForInput, this._ActiveContent, moviePath, insertSubtitle2, false, true);
+			yield return this.PlayMovie(GameController.State.WaitForInput, this._ActiveContent, moviePath, promptText2, false, true);
 			this.ShadowBackdrop.DOFade(0f, 0.5f);
 			Singleton<AudioManager>.Instance.PlayMusic("STT_Theme", 1f, true);
-			base.StartCoroutine(this.PlayTutorialVideo(GameController.State.WaitForInput, "STT_Tut2" + ((Singleton<GameManager>.Instance.CurrentLanguage != GameManager.LanguageSettings.French) ? string.Empty : "_FR"), true));
+			base.StartCoroutine(this.PlayTutorialVideo(GameController.State.WaitForInput, "STT_Tut2" + ((Singleton<GameManager>.Instance.CurrentLanguage == GameManager.LanguageSettings.French) ? "_FR" : ""), true));
 			break;
 		}
 		case GameController.State.RevealAnswers:
@@ -129,7 +119,7 @@ public class SubTheTitleController : BasicGameController
 			GameController.Answer[] inputArray = this._UserInput[this._CurrentRound].ToArray();
 			foreach (GameController.Answer inputPair in inputArray)
 			{
-				yield return this.PlayMovie(GameController.State.RevealAnswers, this._ActiveContent, moviePath, inputPair.Value, true, true);
+				yield return this.PlayMovie(GameController.State.RevealAnswers, this._ActiveContent, moviePath, inputPair.Value, true, true);//MODIFIED
 				yield return base.ResolveInput(inputPair.User.ID);
 			}
 			this.ShadowBackdrop.DOFade(0f, 0.5f);
@@ -140,7 +130,7 @@ public class SubTheTitleController : BasicGameController
 			if (Singleton<GameManager>.Instance.IsFirstSubTheTitle && Singleton<GameManager>.Instance.HouseAnswers)
 			{
 				Singleton<AudioManager>.Instance.StopMusic();
-				yield return this.PlayTutorialVideo(GameController.State.WaitForVoting, "STT_Tut3" + ((Singleton<GameManager>.Instance.CurrentLanguage != GameManager.LanguageSettings.French) ? string.Empty : "_FR"), false);
+				yield return this.PlayTutorialVideo(GameController.State.WaitForVoting, "STT_Tut3" + ((Singleton<GameManager>.Instance.CurrentLanguage == GameManager.LanguageSettings.French) ? "_FR" : ""), false);
 				this._TutorialPlaying = false;
 			}
 			Singleton<AudioManager>.Instance.PlayMusic("STT_Theme", 1f, true);
@@ -162,36 +152,38 @@ public class SubTheTitleController : BasicGameController
 				yield return this.ShowResult(this._ActiveContent.ID.ToString(), inputPair2.Value);
 				yield return base.ResolveVote(inputPair2.User.ID);
 			}
+			List<GameController.Answer>.Enumerator enumerator = default(List<GameController.Answer>.Enumerator);
 			this.ShadowBackdrop.DOFade(0f, 0.5f);
 			base.ChangeState(GameController.State.PostResults);
 			break;
 		}
 		}
 		yield break;
+		yield break;
 	}
 
-	// Token: 0x06003922 RID: 14626 RVA: 0x00034715 File Offset: 0x00032915
 	private IEnumerator PlayMovie(GameController.State curState, ContentManager.SubTheTitleContent subTheTitleContent, string moviePath, string promptText, bool fadeMusic = true, bool holdBleep = true)
 	{
 		this.MovieImage.gameObject.SetActive(true);
 		this.ScreenshotImage.gameObject.SetActive(false);
+		this.InputText.gameObject.SetActive(false);
 		if (this._MoviePlayer != null)
 		{
 			this._MoviePlayer.Stop();
 		}
 		this._MoviePlayer.Target = this.MovieImage;
 		yield return this._MoviePlayer.Play(moviePath, false, false);
-		float aspectRatio = this._MoviePlayer.Width / this._MoviePlayer.Height;
-		if (this._ActiveContent.ID < 999)
-		{
-			if (aspectRatio >= 1.7f)
-			{
-				this.MovieImage.rectTransform.sizeDelta = new Vector2(1282f, 722f);
-			}
-			else
-			{
-				this.MovieImage.rectTransform.sizeDelta = new Vector2(962f, 722f);
-			}
+		float aspectRatio = this._MoviePlayer.Width / this._MoviePlayer.Height;	
+		if (this._ActiveContent.ID < 999)	
+		{	
+			if (aspectRatio >= 1.7f)	
+			{	
+				this.MovieImage.rectTransform.sizeDelta = new Vector2(1282f, 722f);	
+			}	
+			else	
+			{	
+				this.MovieImage.rectTransform.sizeDelta = new Vector2(962f, 722f);	
+			}	
 		}
 		if (fadeMusic)
 		{
@@ -267,7 +259,6 @@ public class SubTheTitleController : BasicGameController
 		yield break;
 	}
 
-	// Token: 0x06003923 RID: 14627 RVA: 0x0013216C File Offset: 0x0013036C
 	private IEnumerator PlayTutorialVideo(GameController.State curState, string tutorialName, bool loop)
 	{
 		this._TutorialPlaying = true;
@@ -281,8 +272,7 @@ public class SubTheTitleController : BasicGameController
 			yield return this._MoviePlayer.Play("Videos/Tutorial/" + tutorialName, loop, false);
 		}
 		yield return this._MoviePlayer.Play("Videos/Tutorial/" + tutorialName, loop, false);
-		float aspectRatio = this._MoviePlayer.Width / this._MoviePlayer.Height;
-		if (aspectRatio >= 1.7f)
+		if (this._MoviePlayer.Width / this._MoviePlayer.Height >= 1.7f)
 		{
 			this.MovieImage.rectTransform.sizeDelta = new Vector2(1282f, 722f);
 		}
@@ -313,37 +303,38 @@ public class SubTheTitleController : BasicGameController
 		yield break;
 	}
 
-	// Token: 0x06003924 RID: 14628 RVA: 0x00034751 File Offset: 0x00032951
 	private IEnumerator ShowResult(string contentID, string promptText)
 	{
 		this.MovieImage.gameObject.SetActive(false);
 		this.ScreenshotImage.gameObject.SetActive(true);
 		this.ScreenshotImage.DOFade(0f, 0.125f);
 		yield return Yielders.Seconds(0.125f);
-		if (this._ActiveContent.ID > 999)
-		{
-			byte[] data = File.ReadAllBytes(Application.persistentDataPath + "/NewContent/sttImg" + this._ActiveContent.ID);
-			Texture2D texture2D = new Texture2D(2, 2);
-			texture2D.LoadImage(data);
-			this.ScreenshotImage.sprite = Sprite.Create(texture2D, new Rect(0f, 0f, (float)texture2D.width, (float)texture2D.height), new Vector2(0f, 0f), 100f);
-			this.ScreenshotImage.preserveAspect = true;
+		//BEGIN MODIFICATION
+		if (this._ActiveContent.ID > 999)	
+		{	
+			byte[] data = File.ReadAllBytes(Application.persistentDataPath + "/NewContent/sttImg" + this._ActiveContent.ID);	
+			Texture2D texture2D = new Texture2D(2, 2);	
+			texture2D.LoadImage(data);	
+			this.ScreenshotImage.sprite = Sprite.Create(texture2D, new Rect(0f, 0f, (float)texture2D.width, (float)texture2D.height), new Vector2(0f, 0f), 100f);	
+			this.ScreenshotImage.preserveAspect = true;	
+		}	
+		else	
+		{	
+			ResourceRequest resourceRequest = Resources.LoadAsync<Sprite>("SubTheTitleScreens/" + contentID);	
+			yield return resourceRequest;	
+			this.ScreenshotImage.sprite = (resourceRequest.asset as Sprite);	
+			this.ScreenshotImage.SetNativeSize();	
+			if (this.ScreenshotImage.sprite.bounds.size.x / this.ScreenshotImage.sprite.bounds.size.y >= 1.7f)	
+			{	
+				this.ScreenshotImage.rectTransform.sizeDelta = new Vector2(1282f, 722f);	
+			}	
+			else	
+			{	
+				this.ScreenshotImage.rectTransform.sizeDelta = new Vector2(962f, 722f);	
+			}	
+			resourceRequest = null;	
 		}
-		else
-		{
-			ResourceRequest resourceRequest = Resources.LoadAsync<Sprite>("SubTheTitleScreens/" + contentID);
-			yield return resourceRequest;
-			this.ScreenshotImage.sprite = (resourceRequest.asset as Sprite);
-			this.ScreenshotImage.SetNativeSize();
-			if (this.ScreenshotImage.sprite.bounds.size.x / this.ScreenshotImage.sprite.bounds.size.y >= 1.7f)
-			{
-				this.ScreenshotImage.rectTransform.sizeDelta = new Vector2(1282f, 722f);
-			}
-			else
-			{
-				this.ScreenshotImage.rectTransform.sizeDelta = new Vector2(962f, 722f);
-			}
-			resourceRequest = null;
-		}
+		//END MODIFICATION
 		this.ScreenshotImage.DOFade(1f, 0.125f);
 		this.InputText.text = promptText;
 		this.InputText.gameObject.SetActive(true);
@@ -351,7 +342,6 @@ public class SubTheTitleController : BasicGameController
 		yield break;
 	}
 
-	// Token: 0x06003925 RID: 14629 RVA: 0x0003476E File Offset: 0x0003296E
 	private void StopTutorialVideo()
 	{
 		base.StopCoroutine("PlayTutorialVideo");
@@ -360,7 +350,6 @@ public class SubTheTitleController : BasicGameController
 		this._MoviePlayer.Unload();
 	}
 
-	// Token: 0x06003926 RID: 14630 RVA: 0x0013219C File Offset: 0x0013039C
 	private void ShowSkipButton()
 	{
 		Controller controller = this._PlayerController.controllers.GetLastActiveController();
@@ -376,33 +365,29 @@ public class SubTheTitleController : BasicGameController
 			}
 		}
 		ControllerType type = controller.type;
-		if (type != ControllerType.Keyboard)
-		{
-			if (type == ControllerType.Joystick)
-			{
-				Joystick joystick = (Joystick)controller;
-				string text = joystick.hardwareName.ToLower();
-				if (text.Contains("xbox") || text.Contains("xinput"))
-				{
-					this.Xbox360Group.SetActive(true);
-				}
-				else if (text.Contains("playstation") || text.Contains("ps4"))
-				{
-					this.PS4Group.SetActive(true);
-				}
-				else
-				{
-					this.Xbox360Group.SetActive(true);
-				}
-			}
-		}
-		else
+		if (type == ControllerType.Keyboard)
 		{
 			this.KeyboardGroup.SetActive(true);
+			return;
 		}
+		if (type != ControllerType.Joystick)
+		{
+			return;
+		}
+		string text = ((Joystick)controller).hardwareName.ToLower();
+		if (text.Contains("xbox") || text.Contains("xinput"))
+		{
+			this.Xbox360Group.SetActive(true);
+			return;
+		}
+		if (text.Contains("playstation") || text.Contains("ps4"))
+		{
+			this.PS4Group.SetActive(true);
+			return;
+		}
+		this.Xbox360Group.SetActive(true);
 	}
 
-	// Token: 0x06003927 RID: 14631 RVA: 0x001322B4 File Offset: 0x001304B4
 	private void HideSkipButton()
 	{
 		this.XboxOneGroup.SetActive(false);
@@ -413,57 +398,48 @@ public class SubTheTitleController : BasicGameController
 		this.SwitchGroup.SetActive(false);
 	}
 
-	// Token: 0x0400247F RID: 9343
+	public SubTheTitleController()
+	{
+	}
+
+	// Note: this type is marked as 'beforefieldinit'.
+	static SubTheTitleController()
+	{
+	}
+
 	public static string BleepMoviePath = "Videos/Bumper/STTBoop";
 
-	// Token: 0x04002480 RID: 9344
 	public static string CountdownMoviePath = "Videos/Bumper/STTCountdown";
 
-	// Token: 0x04002481 RID: 9345
 	public static string LobbyMoviePath = "Videos/Bumper/letsgotolobby";
 
-	// Token: 0x04002482 RID: 9346
 	public RawImage MovieImage;
 
-	// Token: 0x04002483 RID: 9347
 	public Image ScreenshotImage;
 
-	// Token: 0x04002484 RID: 9348
 	public TextMeshProUGUI InputText;
 
-	// Token: 0x04002485 RID: 9349
 	public Image ShadowBackdrop;
 
-	// Token: 0x04002486 RID: 9350
 	[Header("Skip Containers")]
 	public GameObject KeyboardGroup;
 
-	// Token: 0x04002487 RID: 9351
 	public GameObject XboxOneGroup;
 
-	// Token: 0x04002488 RID: 9352
 	public GameObject PS4Group;
 
-	// Token: 0x04002489 RID: 9353
 	public GameObject Xbox360Group;
 
-	// Token: 0x0400248A RID: 9354
 	public GameObject WiiUGroup;
 
-	// Token: 0x0400248B RID: 9355
 	public GameObject SwitchGroup;
 
-	// Token: 0x0400248C RID: 9356
 	[SerializeField]
 	private MoviePlayer _MoviePlayer;
 
-	// Token: 0x0400248D RID: 9357
 	private ContentManager.SubTheTitleContent _ActiveContent;
 
-	// Token: 0x0400248E RID: 9358
 	private bool _TutorialPlaying;
 
-	// Token: 0x0400248F RID: 9359
-	private string moviePath;
+	private string moviePath; //ADDED
 }
-

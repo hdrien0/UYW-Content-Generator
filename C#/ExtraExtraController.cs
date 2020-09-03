@@ -1,17 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
+using System.IO; //ADDED
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-// Token: 0x02000771 RID: 1905
 public class ExtraExtraController : BasicGameController
 {
-	// Token: 0x17000AEC RID: 2796
-	// (get) Token: 0x06003873 RID: 14451 RVA: 0x000341CA File Offset: 0x000323CA
 	protected override string TaskDescriptionText
 	{
 		get
@@ -20,8 +17,6 @@ public class ExtraExtraController : BasicGameController
 		}
 	}
 
-	// Token: 0x17000AED RID: 2797
-	// (get) Token: 0x06003874 RID: 14452 RVA: 0x0001A7E0 File Offset: 0x000189E0
 	protected override bool CapitalizeAnswers
 	{
 		get
@@ -30,7 +25,6 @@ public class ExtraExtraController : BasicGameController
 		}
 	}
 
-	// Token: 0x06003875 RID: 14453 RVA: 0x000341D1 File Offset: 0x000323D1
 	protected override IEnumerator StartState(GameController.State state)
 	{
 		yield return base.StartState(state);
@@ -44,6 +38,7 @@ public class ExtraExtraController : BasicGameController
 			this.MainCamera.transform.position = new Vector3(-4.99f, -2.75f, 0f);
 			this.MainCamera.orthographicSize = 2.15f;
 			this._ActiveContent = (Singleton<ContentManager>.Instance.FindRandomContent(ContentManager.GameType.ExtraExtra) as ContentManager.ExtraExtraContent);
+			//BEGIN MODIFICATION
 			Sprite contentSprite;
 
 			if (this._ActiveContent.ID > 999)
@@ -61,13 +56,14 @@ public class ExtraExtraController : BasicGameController
 			{
 				this._ActiveSize = this.Landscape;
 			}
+			//END MODIFICATION
 			else
 			{
 				this._ActiveSize = this.Portrait;
 			}
 			for (int i = 0; i < this._ActiveSize.Images.Length; i++)
 			{
-				
+				//BEGIN MODIFICATION
 				this._ActiveSize.Images[i].sprite = contentSprite;
 				this._ActiveSize.Images[i].preserveAspect = true;
 			}
@@ -86,6 +82,7 @@ public class ExtraExtraController : BasicGameController
 					this._ActiveSize.InputContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(imgSize.x + margin, imgSize.y + margin);
 				}
 			}
+			//END MODIFICATION
 
 			while (Singleton<LoadingScreen>.Instance.IsShowing)
 			{
@@ -156,7 +153,6 @@ public class ExtraExtraController : BasicGameController
 		yield break;
 	}
 
-	// Token: 0x06003876 RID: 14454 RVA: 0x0012E2C4 File Offset: 0x0012C4C4
 	private IEnumerator ShowNewspaper(string promptText, float waitDuration)
 	{
 		this.NewspaperBase.transform.localScale = Vector3.zero;
@@ -168,47 +164,33 @@ public class ExtraExtraController : BasicGameController
 		yield break;
 	}
 
-	// Token: 0x040023CD RID: 9165
 	public GameObject InputContainer;
 
-	// Token: 0x040023CE RID: 9166
 	public GameObject RevealContainer;
 
-	// Token: 0x040023CF RID: 9167
 	public GameObject NewspaperBase;
 
-	// Token: 0x040023D0 RID: 9168
 	public GameObject VotingPaper;
 
-	// Token: 0x040023D1 RID: 9169
 	public ExtraExtraController.NewspaperSize Landscape;
 
-	// Token: 0x040023D2 RID: 9170
 	public ExtraExtraController.NewspaperSize Portrait;
 
-	// Token: 0x040023D3 RID: 9171
 	public Camera MainCamera;
 
-	// Token: 0x040023D4 RID: 9172
 	private ContentManager.ExtraExtraContent _ActiveContent;
 
-	// Token: 0x040023D5 RID: 9173
 	private ExtraExtraController.NewspaperSize _ActiveSize;
 
-	// Token: 0x02000772 RID: 1906
 	[Serializable]
 	public class NewspaperSize
 	{
-		// Token: 0x040023D6 RID: 9174
 		public GameObject InputContainer;
 
-		// Token: 0x040023D7 RID: 9175
 		public GameObject RevealContainer;
 
-		// Token: 0x040023D8 RID: 9176
 		public Image[] Images;
 
-		// Token: 0x040023D9 RID: 9177
 		public TextMeshProUGUI Text;
 	}
 }
